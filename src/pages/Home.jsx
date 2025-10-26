@@ -1,30 +1,42 @@
 "use client"
 
 import { useRef, useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { useInView } from "react-intersection-observer"
+import { Link } from "react-router-dom" // Added for redirects
 import Navbar from "../components/Navbar"
-import Menu from "../components/Menu"
-import WalkingGirlImage from "../assets/images/hero.jpg"
-import AboutImage1 from "../assets/images/about1.png"
-import AboutImage2 from "../assets/images/about2.png"
-import AboutImage3 from "../assets/images/about3.png"
+import WalkingGirlImage from "../assets/images/hero1.jpg"
+import AboutImage1 from "../assets/images/hero2.jpeg"
 import PortfolioSection from "../components/PortfolioSection"
+import Footer from "../components/Footer";
 import DressImage from "../assets/images/dress.png"
 import Dress1Image from "../assets/images/dress1.png"
 import Video1 from "../assets/images/video1.mp4"
 import Video2 from "../assets/images/video2.mp4"
-import FooterImg from "../assets/images/footer.png"
-import EventImg from "../assets/images/event.png";
-import event1 from "../assets/images/event1.jpg";
-import event2 from "../assets/images/event2.jpg";
-import event3 from "../assets/images/event3.jpg";
-import event4 from "../assets/images/event4.jpg";
-import event5 from "../assets/images/event5.jpg";
-import event6 from "../assets/images/event6.jpg";
-import event7 from "../assets/images/event7.jpg";
-import event8 from "../assets/images/event8.jpg";
-
+import EventImg from "../assets/images/event.png"
+import event1 from "../assets/images/event1.jpg"
+import event2 from "../assets/images/event2.jpg"
+import event3 from "../assets/images/event3.jpg"
+import event4 from "../assets/images/event4.jpg"
+import event5 from "../assets/images/event5.jpg"
+import event6 from "../assets/images/event6.jpg"
+import event7 from "../assets/images/event7.jpg"
+import event8 from "../assets/images/event8.jpg"
+// New image imports for Gallery Section
+import jodhabai1 from "../assets/images/jodhabai1.jpg"
+import jodhabai2 from "../assets/images/jodhabai2.jpg"
+import jodhabai5 from "../assets/images/jodhabai5.jpg"
+import jodhabaidetail from "../assets/images/jodhabaidetail.webp"
+import jodhabaimain from "../assets/images/jodhabaimain.jpg"
+import ranipadmavati1 from "../assets/images/ranipadmavati1.jpg"
+import ranipadmavati2 from "../assets/images/ranipadmavati2.jpg"
+import ranipadmavati5 from "../assets/images/ranipadmavati5.jpg"
+import ranipadmavatidetail from "../assets/images/ranipadmavatidetail.jpg"
+import ranipadmavatimain from "../assets/images/ranipadmavatimain.jpg"
+import ranilaxmi1 from "../assets/images/ranilaxmi1.jpg"
+import ranilaxmi2 from "../assets/images/ranilaxmi2.jpg"
+import ranilaxmidetail from "../assets/images/ranilaxmidetail.jpeg"
+import ranilaxmimain from "../assets/images/ranilaxmimain.jpg"
 
 const Home = () => {
   const heroRef = useRef(null)
@@ -33,18 +45,25 @@ const Home = () => {
   const { ref: contactRef, inView: contactInView } = useInView({ triggerOnce: false, threshold: 0.2 })
   const { ref: aboutRef, inView: aboutInView } = useInView({ triggerOnce: false, threshold: 0.2 })
 
-  // State for slideshow on left side
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const images = [AboutImage1, AboutImage2, AboutImage3]
+  // State for Hero Section slider
+  const [currentHeroIndex, setCurrentHeroIndex] = useState(0)
+  const heroImages = [WalkingGirlImage, AboutImage1]
 
-  // Automatic slideshow effect
+  // Automatic image change effect for Hero Section
   useEffect(() => {
-    console.log("Home component mounted")
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length)
+    const heroInterval = setInterval(() => {
+      setCurrentHeroIndex((prevIndex) => (prevIndex + 1) % heroImages.length)
     }, 3000) // Change image every 3 seconds
-    return () => clearInterval(interval) // Cleanup on unmount
-  }, [images.length])
+    return () => clearInterval(heroInterval) // Cleanup on unmount
+  }, [heroImages.length])
+
+  // Preload hero images to prevent loading delays
+  useEffect(() => {
+    heroImages.forEach((image) => {
+      const img = new Image()
+      img.src = image
+    })
+  }, [])
 
   // Animation variants for Custom, Events, Contact, and About sections
   const imageVariants = {
@@ -62,130 +81,319 @@ const Home = () => {
     visible: { opacity: 1, y: 0, rotate: 0, transition: { duration: 1.2, ease: "easeInOut" } },
   }
 
+  // Animation variants for Hero Section image change (simple fade)
+  const fadeVariants = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 0.5 } },
+    exit: { opacity: 0, transition: { duration: 0.5 } },
+  }
+
   return (
     <div className="overflow-x-hidden" style={{ "--smooth-scroll": "true" }}>
-      {/* Hero Section */}
-      <section ref={heroRef} className="h-[70vh] sm:h-[70vh] md:h-screen bg-cover bg-center relative m-0 p-0 overflow-hidden">
-        <img
-          src={WalkingGirlImage}
-          alt="Walking Girl"
-          className="absolute top-0 left-0 w-full h-full object-cover object-center"
-          style={{ objectPosition: 'center 20%' }} // Adjusts image focus for better visibility
-        />
-        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-5"></div>
-        <div className="relative z-10">
-          <Navbar heroRef={heroRef} />
+      <Navbar heroRef={heroRef} />
+
+      {/* Hero Section (Unchanged) */}
+      <section
+        ref={heroRef}
+        className="h-[70vh] sm:h-[70vh] md:h-screen relative m-0 p-0 overflow-hidden"
+        style={{ 
+          backgroundColor: "#000000", // Black fallback to match overlay
+          backgroundImage: `url(${heroImages[0]})`, // First image as fallback
+          backgroundSize: "cover",
+          backgroundPosition: "center 20%"
+        }}
+      >
+        <div className="absolute top-0 left-0 w-full h-full z-5">
+          <AnimatePresence initial={false} mode="wait">
+            <motion.img
+              key={currentHeroIndex}
+              src={heroImages[currentHeroIndex]}
+              alt={`Hero Image ${currentHeroIndex + 1}`}
+              className="w-full h-full object-cover object-center"
+              style={{ objectPosition: "center 20%" }}
+              variants={fadeVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              onError={() => console.log(`Failed to load image ${heroImages[currentHeroIndex]}`)}
+            />
+          </AnimatePresence>
         </div>
-        <Menu />
-        <div className="absolute inset-0 flex items-center sm:items-center justify-center z-20">
-          <p className="text-white text-lg sm:text-xl md:text-3xl font-bold [text-shadow:_2px_2px_6px_rgba(0,0,0,0.9)] px-4 text-center pt-24 sm:pt-0">
-            Step Into the Future of Fashion with
-          </p>
-        </div>
+        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-10"></div>
+        <div className="absolute inset-0 flex items-center sm:items-center justify-center z-20"></div>
       </section>
       <div className="border-t-2 border-white/50 shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
-      
-      {/* About Section */}
-      <section ref={aboutRef} className="py-20 bg-gradient-to-b from-[#A8B5A2] to-[#8A9A85] min-h-[80vh] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="w-full h-full bg-[url('https://source.unsplash.com/random/1920x1080/?luxury')] bg-cover bg-center"></div>
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FFD700]/20 to-[#A8B5A2]/20 pointer-events-none"></div>
+
+      <section ref={aboutRef} className="py-20 bg-[#F5F1E8] min-h-auto relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Header Section */}
           <motion.div
-            className="text-center mb-16 relative"
+            className="text-center mb-16"
             initial="hidden"
             animate={aboutInView ? "visible" : "hidden"}
             variants={textVariants}
           >
-            <div className="relative flex flex-col items-center">
-              <motion.h2
-                className="text-5xl md:text-7xl font-bold text-[#FFD700] font-dancing-script [text-shadow:_0_3px_6px_rgba(0,0,0,0.4)] relative z-10"
-                style={{ transform: "translateY(-20px) rotate(-3deg)" }}
-                variants={headingVariants}
-              >
-                Crafted with Passion
-              </motion.h2>
-              <motion.h2
-                className="text-4xl md:text-6xl font-bold text-[#FFD700] font-dancing-script [text-shadow:_0_3px_6px_rgba(0,0,0,0.4)] relative z-10"
-                style={{ transform: "translateX(20px) rotate(2deg)" }}
-                variants={headingVariants}
-              >
-                For Timeless Elegance
-              </motion.h2>
-              <motion.h2
-                className="text-3xl md:text-5xl font-bold text-[#FFD700] font-dancing-script [text-shadow:_0_3px_6px_rgba(0,0,0,0.4)] relative z-10"
-                style={{ transform: "translateY(20px) rotate(-1deg)" }}
-                variants={headingVariants}
-              >
-                Wear Your Story
-              </motion.h2>
-              <div className="absolute top-0 right-0 md:right-8 lg:right-16">
-                <span className="text-2xl md:text-3xl text-[#FFD700] [text-shadow:_0_1px_2px_rgba(0,0,0,0.3)]">©</span>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 text-sm sm:text-base text-[#666666]">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">🌿</span>
+                <span>Sustainable</span>
               </div>
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-32 h-1 bg-[#FFD700]/30 rotate-45 opacity-20"></div>
-                <div className="w-32 h-1 bg-[#FFD700]/30 -rotate-45 opacity-20"></div>
+              <div className="hidden sm:block w-1 h-1 bg-[#999999] rounded-full"></div>
+              <div className="flex items-center gap-2">
+                <span>Handmade</span>
+              </div>
+              <div className="hidden sm:block w-1 h-1 bg-[#999999] rounded-full"></div>
+              <div className="flex items-center gap-2">
+                <span className="text-lg">💚</span>
+                <span>Comfortable</span>
               </div>
             </div>
+
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#333333] mb-4 leading-tight">
+              Bringing Slow Fashion to your everyday
+            </h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#333333] mb-8 leading-tight">
+              journeys, made with love
+            </h2>
+
+            <a
+              href="#"
+              className="inline-block text-[#666666] font-semibold border-b-2 border-[#666666] hover:border-[#333333] hover:text-[#333333] transition-colors text-sm sm:text-base"
+            >
+              Read Our Story
+            </a>
           </motion.div>
 
-          <div className="flex flex-col md:flex-row gap-12 items-center pr-0.5 sm:pr-2"> {/* Added right padding for mobile */}
-            <motion.div
-              className="flex-1 flex justify-center md:justify-start"
-              initial="hidden"
-              animate={aboutInView ? "visible" : "hidden"}
-              variants={imageVariants}
-            >
-              <div className="relative bg-white/95 backdrop-blur-lg rounded-full p-4 shadow-[0_0_10px_rgba(255,215,0,0.3)] border-2 border-[#FFD700]/30 transform hover:-translate-y-2 transition-transform duration-300">
-                <motion.img
-                  src={images[currentImageIndex]}
-                  alt={`INKOWO Slide ${currentImageIndex + 1}`}
-                  className="w-full max-w-md rounded-full object-cover"
-                  onLoad={() => console.log(`Slideshow image ${currentImageIndex + 1} loaded successfully`)}
-                  onError={() => console.log(`Failed to load slideshow image ${currentImageIndex + 1}`)}
-                  whileHover={{ scale: 1.1, rotate: 3 }}
-                  transition={{ duration: 0.3 }}
-                />
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="flex-1 bg-white/95 backdrop-blur-lg p-8 rounded-xl shadow-2xl border border-[#FFD700]/20 border-t-4 border-[#FFD700] rounded-t-xl transform hover:-translate-y-2 transition-transform duration-300 relative"
-              initial="hidden"
-              animate={aboutInView ? "visible" : "hidden"}
-              variants={textVariants}
-            >
-              <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-[#FFD700]/50 rounded-full"></div>
-              <h4 className="text-xl md:text-2xl font-bold text-[#FFD700] mb-6 tracking-wide font-dancing-script [text-shadow:_0_1px_2px_rgba(0,0,0,0.3)]">𝕚𝕟𝕜𝓸𝔀𝓸</h4>
-              <p className="text-sm md:text-base text-[#000000] mb-6 leading-relaxed font-light hover:text-[#FFD700]/80 transition-colors">
-                INKOWO is a women’s fashion brand that reimagines couture as an intimate, emotional, and 
-                artistic expression. Each creation is a story — a fusion of fine craftsmanship, timeless elegance, 
-                and bold innovation. Rooted in the philosophy that fashion is both wearable art and a reflection of the soul
-              </p>
-              <p className="text-sm md:text-base text-[#000000] mb-8 leading-relaxed font-light hover:text-[#FFD700]/80 transition-colors">
-                INKOWO invites women to experience clothing not just as a statement, but as a personal journey. The brand’s 
-                digital presence mirrors this vision: immersive, refined, and visually arresting. With a seamless blend of 
-                avant-garde technology and aesthetic sophistication, INKOWO sets a new standard for how fashion is felt, 
-                seen, and lived.
-              </p>
-              <div className="border-t-2 border-[#FFD700]/50 w-16 mb-6 shadow-[0_0_5px_rgba(255,215,0,0.3)]"></div>
-              <p className="text-2xl md:text-3xl text-[#FFD700] font-dancing-script font-bold [text-shadow:_0_1px_2px_rgba(0,0,0,0.3)]">
-                𝓲𝓷𝓴𝓸𝔀𝓸
-              </p>
-            </motion.div>
-          </div>
+          {/* 4 Feature Cards */}
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            initial="hidden"
+            animate={aboutInView ? "visible" : "hidden"}
+            variants={textVariants}
+          >
+            {[
+              {
+                title: "Eco-Friendly",
+                icon: "🌱",
+              },
+              {
+                title: "Zero Waste",
+                icon: "♻️",
+              },
+              {
+                title: "Plastic and Carbon Neutral",
+                icon: "🌿",
+              },
+              {
+                title: "Quality Guarantee",
+                icon: "⭐",
+              },
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                className="bg-[#6B8E6F] rounded-3xl p-8 sm:p-10 flex flex-col items-center justify-center text-center transform hover:-translate-y-2 transition-transform duration-300 shadow-lg"
+                variants={imageVariants}
+              >
+                <div className="text-5xl sm:text-6xl mb-6 text-[#C9B89A]">{feature.icon}</div>
+                <h3 className="text-xl sm:text-2xl font-semibold text-[#C9B89A]">{feature.title}</h3>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
-        {aboutInView && <div>{console.log("About section in view")}</div>}
       </section>
       <div className="border-t-2 border-white/50 shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
 
-      {/* Portfolio Section */}
       <PortfolioSection />
       <div className="border-t-2 border-white/50 shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
+      
+      {/* Gallery Section (Updated with new images and clickable redirects) */}
+      <section
+      ref={customRef}
+      className="py-24 bg-gradient-to-b from-[#1C2526] to-[#2E3532] min-h-[80vh] relative overflow-hidden"
+    >
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="w-full h-full bg-[url('https://source.unsplash.com/random/1920x1080/?luxury')] bg-cover bg-center"></div>
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-b from-[#FFD700]/10 to-[#1C2526]/20 pointer-events-none"></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="space-y-24">
+          {[
+            {
+              id: 1,
+              name: "Jodha Bai",
+              subtitle: "1 October 1542",
+              description: "Their union symbolized religious tolerance. She was called Queen Mother during Akbar's and her son's reign.",
+              details: "Jodha Bai was Akbar's first and last love, and the longest-serving Hindu Mughal Empress.",
+              images: [
+                jodhabai1,
+                jodhabai2,
+                jodhabaimain,
+                jodhabaidetail,
+                jodhabai5,
+              ],
+            },
+            {
+              id: 2,
+              name: "Rani Padmavati",
+              subtitle: "17 September 1303",
+              description: "Rani Padmavati, or Padmini, was the legendary queen of Mewar, known for her beauty.",
+              details: "She chose jauhar over dishonor when Alauddin Khilji attacked Chittorgarh, symbolizing Rajput pride forever.",
+              images: [
+                ranipadmavati1,
+                ranipadmavati2,
+                ranipadmavatimain,
+                ranipadmavatidetail,
+                ranipadmavati5,
+              ],
+            },
+            {
+              id: 3,
+              name: "Rani Lakshmibai",
+              subtitle: "19 November 1828",
+              description: "Rani Lakshmibai, born Manikarnika in 1828, learned horse riding, sword fighting, and archery young.",
+              details: "She led the 1857 revolt bravely, carrying her son and sword, dying fighting the British.",
+              images: [
+                ranilaxmi1,
+                ranilaxmi2,
+                ranilaxmimain,
+                ranilaxmidetail,
+              ],
+            },
+          ].map((item, index) => (
+            <div key={item.id} className="gallery-item">
+              <div
+                className={`grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12 items-center ${
+                  index % 2 === 1 ? "md:grid-flow-dense" : ""
+                }`}
+              >
+                {/* Images Column (Left) */}
+                <div
+                  className={`space-y-4 ${index % 2 === 1 ? "md:col-start-3" : ""}`}
+                >
+                  <div className="grid grid-cols-2 gap-4">
+                    {item.images.slice(0, 2).map((img, i) => (
+                      <Link to="/collection" key={i}>
+                        <div className="overflow-hidden rounded-xl aspect-square cursor-pointer hover:opacity-80 transition-opacity">
+                          <div className="relative w-full h-full bg-gradient-to-br from-[#FFD700]/20 to-[#1C2526]/20 border border-[#FFD700]/20 shadow-lg">
+                            <img
+                              src={img}
+                              alt={`${item.name} ${i + 1}`}
+                              className="w-full h-full object-cover"
+                              onError={() =>
+                                console.log(`Failed to load image: ${item.name} ${i + 1}`)
+                              }
+                            />
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                  <Link to="/collection">
+                    <div className="overflow-hidden rounded-xl aspect-video cursor-pointer hover:opacity-80 transition-opacity">
+                      <div className="relative w-full h-full bg-gradient-to-br from-[#FFD700]/20 to-[#1C2526]/20 border border-[#FFD700]/20 shadow-lg">
+                        <img
+                          src={item.images[2]}
+                          alt={`${item.name} main`}
+                          className="w-full h-full object-cover"
+                          onError={() =>
+                            console.log(`Failed to load image: ${item.name} main`)
+                          }
+                        />
+                      </div>
+                    </div>
+                  </Link>
+                </div>
 
-      {/* Custom Experience Section */}
-      <section ref={customRef} className="py-20 bg-gradient-to-b from-[#A8B5A2] to-[#8A9A85] min-h-[80vh] relative overflow-hidden">
+                {/* Content Column */}
+                <div
+                  className={`space-y-6 ${
+                    index % 2 === 1 ? "md:col-start-1 md:col-end-3" : "md:col-start-2"
+                  }`}
+                >
+                  <div className="space-y-2">
+                    <p className="text-[#FFD700] text-sm tracking-widest font-light">
+                      ROYAL HISTORY
+                    </p>
+                    <h3 className="text-4xl sm:text-5xl font-light text-white font-dancing-script">
+                      {item.name}
+                    </h3>
+                    <p className="text-gray-300 text-sm tracking-wide">{item.subtitle}</p>
+                  </div>
+                  <div className="w-12 h-px bg-gradient-to-r from-[#FFD700] to-transparent"></div>
+                  <div className="space-y-4 text-gray-300 leading-relaxed">
+                    <p className="text-sm">{item.description}</p>
+                    <p className="text-sm">{item.details}</p>
+                  </div>
+                  <a
+                    href="#"
+                    className="inline-block px-6 py-2 text-sm tracking-widest text-[#FFD700] border-b-2 border-[#FFD700] font-light"
+                  >
+                    LEARN MORE
+                  </a>
+                </div>
+
+                {/* Right Images Column */}
+                <div
+                  className={`space-y-4 ${index % 2 === 1 ? "md:col-start-1" : "md:col-start-3"}`}
+                >
+                  <Link to="/collection">
+                    <div className="overflow-hidden rounded-xl aspect-video cursor-pointer hover:opacity-80 transition-opacity">
+                      <div className="relative w-full h-full bg-gradient-to-br from-[#FFD700]/20 to-[#1C2526]/20 border border-[#FFD700]/20 shadow-lg">
+                        <img
+                          src={item.images[3]}
+                          alt={`${item.name} detail`}
+                          className="w-full h-full object-cover"
+                          onError={() =>
+                            console.log(`Failed to load image: ${item.name} detail`)
+                          }
+                        />
+                      </div>
+                    </div>
+                  </Link>
+                  <div className="grid grid-cols-2 gap-4">
+                    {item.images.slice(4).map((img, i) => (
+                      <Link to="/collection" key={i}>
+                        <div className="overflow-hidden rounded-xl aspect-square cursor-pointer hover:opacity-80 transition-opacity">
+                          <div className="relative w-full h-full bg-gradient-to-br from-[#FFD700]/20 to-[#1C2526]/20 border border-[#FFD700]/20 shadow-lg">
+                            <img
+                              src={img}
+                              alt={`${item.name} ${i + 5}`}
+                              className="w-full h-full object-cover"
+                              onError={() =>
+                                console.log(`Failed to load image: ${item.name} ${i + 5}`)
+                              }
+                            />
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              {index < 2 && (
+                <div className="mt-24 h-px bg-gradient-to-r from-transparent via-[#FFD700]/30 to-transparent"></div>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="text-center mt-12">
+          <Link
+            to="/collection"
+            className="inline-block px-8 py-3 border border-[#FFD700] text-[#FFD700] text-sm tracking-widest font-light hover:bg-[#FFD700] hover:text-[#1C2526] transition-all"
+          >
+            Explore More Collection
+          </Link>
+        </div>
+      </div>
+      {customRef && customRef.current && <div>{console.log("Gallery section in view")}</div>}
+    </section>
+    <div className="border-t-2 border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.1)]"></div>
+
+      {/* Custom Experience Section (Unchanged) */}
+      <section
+        ref={customRef}
+        className="py-20 bg-gradient-to-b from-[#A8B5A2] to-[#8A9A85] min-h-[80vh] relative overflow-hidden"
+      >
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div className="w-full h-full bg-[url('https://source.unsplash.com/random/1920x1080/?luxury')] bg-cover bg-center"></div>
         </div>
@@ -205,7 +413,8 @@ const Home = () => {
             animate={customInView ? "visible" : "hidden"}
             variants={textVariants}
           >
-            Embark on a collaborative creation process where your vision is transformed into wearable art, crafted with unparalleled elegance and precision.
+            Embark on a collaborative creation process where your vision is transformed into wearable art, crafted with
+            unparalleled elegance and precision.
           </motion.p>
 
           <div className="mb-16">
@@ -218,7 +427,8 @@ const Home = () => {
                 {
                   step: 1,
                   title: "Discovery Consultation",
-                  description: "Begin with a one-on-one consultation to share your inspirations, style, and dreams with our expert designers.",
+                  description:
+                    "Begin with a one-on-one consultation to share your inspirations, style, and dreams with our expert designers.",
                   images: [
                     "https://media.istockphoto.com/id/1312051741/photo/shot-of-a-young-women-as-a-fashion-designer-stock-photo.jpg?s=612x612&w=0&k=20&c=CwNvWSSfLim0yYIBhCchWLHiOMDZ6qB7t9oIpebzKS0=",
                     "https://media.istockphoto.com/id/599713242/photo/beautiful-female-designer-at-design-studio.jpg?s=612x612&w=0&k=20&c=RqMBwinnyniYtSx0AtYsBwRg5bNS1-vosLLw7sy3ZOo=",
@@ -228,37 +438,37 @@ const Home = () => {
                 {
                   step: 2,
                   title: "Moodboard & Sketch",
-                  description: "Collaborate to create a curated moodboard and detailed sketches, bringing your vision to life with artistic precision.",
+                  description:
+                    "Collaborate to create a curated moodboard and detailed sketches, bringing your vision to life with artistic precision.",
                   image: DressImage,
                 },
                 {
                   step: 3,
                   title: "Crafting Masterpiece",
-                  description: "Our artisans handcraft your piece using the finest materials, ensuring every detail reflects your unique story.",
+                  description:
+                    "Our artisans handcraft your piece using the finest materials, ensuring every detail reflects your unique story.",
                   image: Dress1Image,
                 },
               ].map((step, index) => (
                 <motion.div
                   key={index}
-                  className={`flex flex-col md:flex-row items-center mb-12 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
+                  className={`flex flex-col md:flex-row items-center mb-12 ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}
                   initial="hidden"
                   animate={customInView ? "visible" : "hidden"}
                 >
-                  <motion.div
-                    className="w-full md:w-1/2 px-4 mb-6 md:mb-0"
-                    variants={imageVariants}
-                  >
+                  <motion.div className="w-full md:w-1/2 px-4 mb-6 md:mb-0" variants={imageVariants}>
                     <div className="relative bg-white/95 backdrop-blur-lg p-6 rounded-xl shadow-2xl hover:shadow-xl transition-shadow duration-300 border border-[#FFD700]/20 transform hover:-translate-y-2">
                       <div className="absolute -top-4 left-4 bg-[#FFD700] text-[#000000] rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
                         {step.step}
                       </div>
-                      <h4 className="text-xl sm:text-2xl font-dancing-script font-bold text-[#000000] mb-3 [text-shadow:_0_1px_2px_rgba(0,0,0,0.3)]">{step.title}</h4>
-                      <p className="text-sm sm:text-base text-[#000000] leading-relaxed font-light">{step.description}</p>
+                      <h4 className="text-xl sm:text-2xl font-dancing-script font-bold text-[#000000] mb-3 [text-shadow:_0_1px_2px_rgba(0,0,0,0.3)]">
+                        {step.title}
+                      </h4>
+                      <p className="text-sm sm:text-base text-[#000000] leading-relaxed font-light">
+                        {step.description}
+                      </p>
                       {step.images && (
-                        <motion.div
-                          className="mt-6 flex flex-row gap-4 justify-center"
-                          variants={imageVariants}
-                        >
+                        <motion.div className="mt-6 flex flex-row gap-4 justify-center" variants={imageVariants}>
                           {step.images.map((img, imgIndex) => (
                             <motion.img
                               key={imgIndex}
@@ -350,9 +560,15 @@ const Home = () => {
               initial="hidden"
               animate={customInView ? "visible" : "hidden"}
             >
-              Powered by INKOWO’s <span className="font-bold">Intelligent Design Engine</span> for personalized recommendations.
+              Powered by INKOWO's <span className="font-bold">Intelligent Design Engine</span> for personalized
+              recommendations.
             </motion.p>
-            <motion.div className="text-center mt-6" variants={textVariants} initial="hidden" animate={customInView ? "visible" : "hidden"}>
+            <motion.div
+              className="text-center mt-6"
+              variants={textVariants}
+              initial="hidden"
+              animate={customInView ? "visible" : "hidden"}
+            >
               <a
                 href="#"
                 className="inline-block bg-transparent border-2 border-[#FFD700] text-[#000000] py-2 px-6 rounded-lg hover:bg-[#FFD700] hover:text-[#000000] transition-all duration-300 text-sm sm:text-base"
@@ -428,7 +644,7 @@ const Home = () => {
                         alt={`${testimonial.name}'s Story`}
                         className="w-full h-full object-cover rounded-lg shadow-md"
                         variants={imageVariants}
-                        whileHover={{ scale: 1.05}}
+                        whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.3 }}
                         onError={() => console.log(`Failed to load placeholder image for ${testimonial.name}`)}
                       />
@@ -443,379 +659,255 @@ const Home = () => {
       </section>
       <div className="border-t-2 border-white/50 shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
 
-      {/* Events Section */}
-      <section
-      ref={eventsRef}
-      className="py-20 bg-gradient-to-b from-[#8A9A85] to-[#A8B5A2] relative overflow-hidden"
-    >
-
-      <div className="absolute inset-0 bg-gradient-to-b from-[#FFD700]/10 to-[#A8B5A2]/20 pointer-events-none"></div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#000000] text-center mb-4 font-dancing-script [text-shadow:_0_2px_4px_rgba(0,0,0,0.2)]">
-          INKOWO Events
-        </h2>
-
-        <p className="text-base sm:text-lg md:text-xl text-[#000000] text-center mb-12 leading-relaxed font-light max-w-3xl mx-auto">
-          Relive the magic of our past events and join us for exclusive upcoming fashion drops.
-        </p>
-
-        {/* ✅ Added "loading='lazy'" for all event images + reduced shadow complexity */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {[
-            { title: "Fashion Week 2025", date: "Oct 15, 2025", image: event1 },
-            { title: "Summer Collection Launch", date: "Jun 10, 2025", image: event2 },
-            { title: "Winter Gala 2025", date: "Dec 20, 2025", image: event3 },
-            { title: "Spring Showcase", date: "Mar 05, 2025", image: event4 },
-            { isImage: true },
-            { title: "Holiday Extravaganza", date: "Dec 01, 2025", image: event5 },
-            { title: "Eco-Fashion Day", date: "Apr 12, 2025", image: event6 },
-            { title: "Mid-Year Couture", date: "Jul 18, 2025", image: event7 },
-            { title: "New Year Preview", date: "Jan 10, 2026", image: event8 },
-          ].map((event, index) =>
-            event && !event.isImage ? (
-              <div
-                key={index}
-                className="relative bg-white/95 rounded-xl overflow-hidden border border-[#FFD700]/20 transform hover:-translate-y-2 transition-transform duration-200"
-                style={{ zIndex: 10 + index }}
-              >
-                <div className="relative">
+      {/* Events Section (Unchanged) */}
+      <section ref={eventsRef} className="py-20 bg-gradient-to-b from-[#8A9A85] to-[#A8B5A2] relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FFD700]/10 to-[#A8B5A2]/20 pointer-events-none"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#000000] text-center mb-4 font-dancing-script [text-shadow:_0_2px_4px_rgba(0,0,0,0.2)]">
+            INKOWO Events
+          </h2>
+          <p className="text-base sm:text-lg md:text-xl text-[#000000] text-center mb-12 leading-relaxed font-light max-w-3xl mx-auto">
+            Relive the magic of our past events and join us for exclusive upcoming fashion drops.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {[
+              { title: "Fashion Week 2025", date: "Oct 15, 2025", image: event1 },
+              { title: "Summer Collection Launch", date: "Jun 10, 2025", image: event2 },
+              { title: "Winter Gala 2025", date: "Dec 20, 2025", image: event3 },
+              { title: "Spring Showcase", date: "Mar 05, 2025", image: event4 },
+              { isImage: true },
+              { title: "Holiday Extravaganza", date: "Dec 01, 2025", image: event5 },
+              { title: "Eco-Fashion Day", date: "Apr 12, 2025", image: event6 },
+              { title: "Mid-Year Couture", date: "Jul 18, 2025", image: event7 },
+              { title: "New Year Preview", date: "Jan 10, 2026", image: event8 },
+            ].map((event, index) =>
+              event && !event.isImage ? (
+                <div
+                  key={index}
+                  className="relative bg-white/95 rounded-xl overflow-hidden border border-[#FFD700]/20 transform hover:-translate-y-2 transition-transform duration-200"
+                  style={{ zIndex: 10 + index }}
+                >
+                  <div className="relative">
+                    <img
+                      src={event.image || "/placeholder.svg"}
+                      alt={event.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-64 sm:h-72 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/60 to-transparent"></div>
+                    <div className="absolute top-4 right-4 bg-[#FFD700] text-[#000000] text-xs font-semibold rounded-full w-12 h-12 flex items-center justify-center shadow">
+                      New
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl sm:text-2xl font-dancing-script font-bold text-[#FFD700] mb-2 [text-shadow:_0_1px_2px_rgba(0,0,0,0.3)]">
+                      {event.title}
+                    </h3>
+                    <p className="text-sm text-[#000000] font-light">{event.date}</p>
+                    <a
+                      href="#"
+                      className="inline-block mt-4 text-sm font-semibold text-[#FFD700] border-b-2 border-[#FFD700]/50 hover:border-[#FFD700] transition-colors"
+                    >
+                      Explore Event
+                    </a>
+                  </div>
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#FFD700] to-[#A8B5A2]"></div>
+                </div>
+              ) : event?.isImage ? (
+                <div key={index} className="relative">
                   <img
-                    src={event.image}
-                    alt={event.title}
+                    src={EventImg || "/placeholder.svg"}
+                    alt="Event Placeholder"
                     loading="lazy"
                     decoding="async"
-                    className="w-full h-64 sm:h-72 object-cover"
+                    className="w-full h-64 sm:h-72 object-cover mt-[70px]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/60 to-transparent"></div>
-                  <div className="absolute top-4 right-4 bg-[#FFD700] text-[#000000] text-xs font-semibold rounded-full w-12 h-12 flex items-center justify-center shadow">
-                    New
-                  </div>
                 </div>
-
-                <div className="p-6">
-                  <h3 className="text-xl sm:text-2xl font-dancing-script font-bold text-[#FFD700] mb-2 [text-shadow:_0_1px_2px_rgba(0,0,0,0.3)]">
-                    {event.title}
-                  </h3>
-                  <p className="text-sm text-[#000000] font-light">{event.date}</p>
-                  <a
-                    href="#"
-                    className="inline-block mt-4 text-sm font-semibold text-[#FFD700] border-b-2 border-[#FFD700]/50 hover:border-[#FFD700] transition-colors"
-                  >
-                    Explore Event
-                  </a>
-                </div>
-
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#FFD700] to-[#A8B5A2]"></div>
-              </div>
-            ) : event?.isImage ? (
-              <div key={index} className="relative">
-                <img
-                  src={EventImg}
-                  alt="Event Placeholder"
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full h-64 sm:h-72 object-cover mt-[70px]"
-                />
-              </div>
-            ) : (
-              <div key={index} className="relative"></div>
-            )
-          )}
-        </div>
-      </div>
-
-      <div className="mt-[10px] border-t-2 border-white/50 shadow-[0_0_10px_rgba(255,255,255,0.2)]"></div>
-      </section>
-
-          {/* Contact / Apply for Access Section */}
-          <section ref={contactRef} className="py-20 bg-gradient-to-b from-[#A8B5A2] to-[#8A9A85] min-h-[80vh] relative overflow-hidden">
-            <div className="absolute inset-0 opacity-10 pointer-events-none">
-              <div className="w-full h-full bg-[url('https://source.unsplash.com/random/1920x1080/?texture')] bg-cover bg-center"></div>
-            </div>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-              <motion.h2
-                className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#000000] text-center mb-4 font-dancing-script"
-                initial="hidden"
-                animate={contactInView ? "visible" : "hidden"}
-                variants={textVariants}
-              >
-                Connect with INKOWO
-              </motion.h2>
-              <motion.p
-                className="text-base sm:text-lg md:text-xl text-[#000000] text-center mb-12 leading-relaxed font-light max-w-3xl mx-auto"
-                initial="hidden"
-                animate={contactInView ? "visible" : "hidden"}
-                variants={textVariants}
-              >
-                Become a private client or reach out for press and business opportunities.
-              </motion.p>
-
-              <div className="flex flex-col md:flex-row gap-8 max-w-6xl mx-auto">
-                <motion.div
-                  className="flex-1 bg-white/95 backdrop-blur-lg p-8 sm:p-10 rounded-2xl shadow-2xl border border-[#000000]/10 relative overflow-hidden"
-                  initial="hidden"
-                  animate={contactInView ? "visible" : "hidden"}
-                  variants={textVariants}
-                >
-                  <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FFD700] to-[#A8B5A2]"></div>
-                  <motion.h3
-                    className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#000000] mb-8 text-center font-dancing-script"
-                    initial="hidden"
-                    animate={contactInView ? "visible" : "hidden"}
-                    variants={textVariants}
-                  >
-                    Private Client Application
-                  </motion.h3>
-                  <form className="space-y-6">
-                    <motion.div variants={textVariants} initial="hidden" animate={contactInView ? "visible" : "hidden"}>
-                      <label htmlFor="client-name" className="block text-[#000000] font-bold text-sm sm:text-base mb-2">
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        id="client-name"
-                        className="w-full p-3 bg-transparent border-b-2 border-[#000000] focus:border-[#FFD700] focus:outline-none transition-colors text-[#000000] text-sm sm:text-base rounded-sm"
-                        placeholder="Your Name"
-                      />
-                    </motion.div>
-                    <motion.div variants={textVariants} initial="hidden" animate={contactInView ? "visible" : "hidden"}>
-                      <label htmlFor="client-intent" className="block text-[#000000] font-bold text-sm sm:text-base mb-2">
-                        Intent
-                      </label>
-                      <textarea
-                        id="client-intent"
-                        className="w-full p-3 bg-transparent border-b-2 border-[#000000] focus:border-[#FFD700] focus:outline-none transition-colors text-[#000000] text-sm sm:text-base rounded-sm"
-                        placeholder="Describe your interest in becoming a private client"
-                        rows="4"
-                      ></textarea>
-                    </motion.div>
-                    <motion.div variants={textVariants} initial="hidden" animate={contactInView ? "visible" : "hidden"}>
-                      <label htmlFor="client-moodboard" className="block text-[#000000] font-bold text-sm sm:text-base mb-2">
-                        Upload Moodboard
-                      </label>
-                      <input
-                        type="file"
-                        id="client-moodboard"
-                        className="w-full p-3 text-[#000000] text-sm sm:text-base file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#A8B5A2] file:text-[#000000] hover:file:bg-[#FFD700] transition-colors"
-                        accept="image/*"
-                      />
-                    </motion.div>
-                    <motion.button
-                      type="submit"
-                      className="w-full bg-[#000000] text-white py-3 rounded-full hover:bg-[#FFD700] hover:text-[#000000] transition-all duration-300 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg"
-                      variants={textVariants}
-                      initial="hidden"
-                      animate={contactInView ? "visible" : "hidden"}
-                      whileHover={{ scale: 1.05 }}
-                    >
-                      Apply as Private Client
-                    </motion.button>
-                  </form>
-                  <motion.p
-                    className="text-center text-[#000000] text-sm sm:text-base mt-6 font-light italic"
-                    variants={textVariants}
-                    initial="hidden"
-                    animate={contactInView ? "visible" : "hidden"}
-                  >
-                    Join the exclusive world of INKOWO couture.
-                  </motion.p>
-                </motion.div>
-
-                <motion.div
-                  className="flex-1 bg-white/95 backdrop-blur-lg p-8 sm:p-10 rounded-2xl shadow-2xl border border-[#000000]/10 relative overflow-hidden"
-                  initial="hidden"
-                  animate={contactInView ? "visible" : "hidden"}
-                  variants={textVariants}
-                >
-                  <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FFD700] to-[#A8B5A2]"></div>
-                  <motion.h3
-                    className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#000000] mb-8 text-center font-dancing-script"
-                    initial="hidden"
-                    animate={contactInView ? "visible" : "hidden"}
-                    variants={textVariants}
-                  >
-                    Press & Business Inquiries
-                  </motion.h3>
-                  <form className="space-y-6">
-                    <motion.div variants={textVariants} initial="hidden" animate={contactInView ? "visible" : "hidden"}>
-                      <label htmlFor="press-name" className="block text-[#000000] font-bold text-sm sm:text-base mb-2">
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        id="press-name"
-                        className="w-full p-3 bg-transparent border-b-2 border-[#000000] focus:border-[#FFD700] focus:outline-none transition-colors text-[#000000] text-sm sm:text-base rounded-sm"
-                        placeholder="Your Name"
-                      />
-                    </motion.div>
-                    <motion.div variants={textVariants} initial="hidden" animate={contactInView ? "visible" : "hidden"}>
-                      <label htmlFor="press-email" className="block text-[#000000] font-bold text-sm sm:text-base mb-2">
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        id="press-email"
-                        className="w-full p-3 bg-transparent border-b-2 border-[#000000] focus:border-[#FFD700] focus:outline-none transition-colors text-[#000000] text-sm sm:text-base rounded-sm"
-                        placeholder="Your Email"
-                      />
-                    </motion.div>
-                    <motion.div variants={textVariants} initial="hidden" animate={contactInView ? "visible" : "hidden"}>
-                      <label htmlFor="press-message" className="block text-[#000000] font-bold text-sm sm:text-base mb-2">
-                        Message
-                      </label>
-                      <textarea
-                        id="press-message"
-                        className="w-full p-3 bg-transparent border-b-2 border-[#000000] focus:border-[#FFD700] focus:outline-none transition-colors text-[#000000] text-sm sm:text-base rounded-sm"
-                        placeholder="Your inquiry or message"
-                        rows="4"
-                      ></textarea>
-                    </motion.div>
-                    <motion.button
-                      type="submit"
-                      className="w-full bg-[#000000] text-white py-3 rounded-full hover:bg-[#FFD700] hover:text-[#000000] transition-all duration-300 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg"
-                      variants={textVariants}
-                      initial="hidden"
-                      animate={contactInView ? "visible" : "hidden"}
-                      whileHover={{ scale: 1.05 }}
-                    >
-                      Submit Inquiry
-                    </motion.button>
-                  </form>
-                  <motion.p
-                    className="text-center text-[#000000] text-sm sm:text-base mt-6 font-light italic"
-                    variants={textVariants}
-                    initial="hidden"
-                    animate={contactInView ? "visible" : "hidden"}
-                  >
-                    Partner with INKOWO for unparalleled opportunities.
-                  </motion.p>
-                </motion.div>
-              </div>
-            </div>
-            {contactInView && <div>{console.log("Contact section in view")}</div>}
-          </section>
-      <div className="border-t-2 border-white/50 shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
-
-      {/* Footer Section */}
-      <footer className="py-12 text-[#000000] relative overflow-hidden border-t-4 border-[#FFD700]/50 shadow-[0_0_20px_rgba(255,215,0,0.4),-20px_0_40px_rgba(255,215,0,0.5)] bg-[#141414]">
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="w-full h-full bg-[url('https://source.unsplash.com/random/1920x1080/?luxury')] bg-cover bg-center"></div>
-        </div>
-        <div className="absolute top-0 left-0 w-full h-20 pointer-events-none">
-          <img
-            src={FooterImg}
-            alt="Footer Design"
-            className="w-full h-full object-cover opacity-80"
-          />
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <h1
-            className="text-[80px] sm:text-[100px] md:text-[150px] lg:text-[200px] font-dancing-script text-[#FFD700]/20 opacity-5 rotate-[-15deg] tracking-widest filter blur-[2px]"
-          >
-            INKOWO
-          </h1>
-        </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-24">
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12"
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: { opacity: 0, y: 50 },
-              visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: "easeInOut", staggerChildren: 0.2 } },
-            }}
-          >
-            <motion.div className="relative bg-white/95 backdrop-blur-lg p-6 rounded-xl shadow-2xl border border-[#FFD700]/20 transform hover:-translate-y-2 transition-transform duration-300" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
-              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FFD700] to-[#A8B5A2] rounded-t-xl"></div>
-              <h3 className="text-4xl font-dancing-script font-bold mb-4 text-[#FFD700] [text-shadow:_0_2px_4px_rgba(255,215,0,0.3)]">
-                INKOWO
-              </h3>
-              <p className="text-sm leading-relaxed text-[#000000] font-[Lato] font-semibold tracking-wide">
-                <span className="italic">Where fashion meets artistry</span> — embrace couture that speaks your essence, celebrates individuality, and redefines timeless elegance.
-              </p>
-            </motion.div>
-            <motion.div className="relative bg-white/95 backdrop-blur-lg p-6 rounded-xl shadow-2xl border border-[#FFD700]/20 transform hover:-translate-y-2 transition-transform duration-300" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
-              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FFD700] to-[#A8B5A2] rounded-t-xl"></div>
-              <h4 className="text-2xl font-dancing-script font-bold mb-4 text-[#00FFAA] underline decoration-wavy">
-                Quick Links
-              </h4>
-              <ul className="text-sm space-y-2 font-[Lato] font-light text-[#000000] font-semibold">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Our Value</a></li>
-                <li><a href="#">Clients</a></li>
-              </ul>
-            </motion.div>
-            <motion.div className="relative bg-white/95 backdrop-blur-lg p-6 rounded-xl shadow-2xl border border-[#FFD700]/20 transform hover:-translate-y-2 transition-transform duration-300" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
-              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FFD700] to-[#A8B5A2] rounded-t-xl"></div>
-              <h4 className="text-2xl font-dancing-script font-bold mb-4 text-[#00FFAA] underline decoration-wavy">
-                Design
-              </h4>
-              <ul className="text-sm space-y-2 font-[Lato] font-light text-[#000000] font-semibold">
-                <li><a href="#">Web & Interactive</a></li>
-                <li><a href="#">Branding</a></li>
-                <li><a href="#">Video & Animation</a></li>
-              </ul>
-            </motion.div>
-            <motion.div className="relative bg-white/95 backdrop-blur-lg p-6 rounded-xl shadow-2xl border border-[#FFD700]/20 transform hover:-translate-y-2 transition-transform duration-300" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
-              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FFD700] to-[#A8B5A2] rounded-t-xl"></div>
-              <h4 className="text-2xl font-dancing-script font-bold mb-4 text-[#00FFAA] underline decoration-wavy">
-                Reach Us
-              </h4>
-              <ul className="text-sm space-y-2 font-[Lato] font-light font-semibold">
-                <li>E-92, Masjid Moth, Greater Kailash 3, New Delhi - 110048, India</li>
-                <li><a href="tel:+919493999914" className="hover:text-[#FFD700]/80 transition-colors">+91-9493999914</a></li>
-                <li><a href="mailto:contact@artattackk.com" className="hover:text-[#FFD700]/80 transition-colors">contact@Inkowo.com</a></li>
-              </ul>
-            </motion.div>
-          </motion.div>
-          <motion.div
-            className="text-center mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: "easeInOut" }}
-          >
-            <div className="flex justify-center gap-8 mb-6">
-              <motion.a
-                href="#"
-                className="text-[#FFD700] font-dancing-script text-lg"
-                whileHover={{ scale: 1.2, rotate: 5 }}
-                transition={{ duration: 0.3 }}
-              >
-                Instagram
-              </motion.a>
-              <motion.a
-                href="#"
-                className="text-[#FFD700] font-dancing-script text-lg"
-                whileHover={{ scale: 1.2, rotate: 5 }}
-                transition={{ duration: 0.3 }}
-              >
-                Twitter
-              </motion.a>
-              <motion.a
-                href="#"
-                className="text-[#FFD700] font-dancing-script text-lg"
-                whileHover={{ scale: 1.2, rotate: 5 }}
-                transition={{ duration: 0.3 }}
-              >
-                Pinterest
-              </motion.a>
-            </div>
-            <a
-              href="#"
-              className="inline-block bg-gradient-to-r from-[#FFD700] to-[#A8B5A2] text-[#000000] py-3 px-8 rounded-full font-dancing-script text-lg font-bold hover:-translate-y-1 transition-transform duration-300 shadow-[0_0_10px_rgba(255,215,0,0.3)]"
-            >
-              Join Our Exclusive Community
-            </a>
-          </motion.div>
-          <div className="relative pt-6">
-            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FFD700] to-[#A8B5A2]"></div>
-            <p className="text-sm text-[#FFD700] font-[Lato] font-light">© 2025 INKOWO. All rights reserved.</p>
+              ) : (
+                <div key={index} className="relative"></div>
+              ),
+            )}
           </div>
         </div>
-      </footer>
+        <div className="mt-[10px] border-t-2 border-white/50 shadow-[0_0_10px_rgba(255,255,255,0.2)]"></div>
+      </section>
+
+      {/* Contact / Apply for Access Section (Unchanged) */}
+      <section
+        ref={contactRef}
+        className="py-20 bg-gradient-to-b from-[#A8B5A2] to-[#8A9A85] min-h-[80vh] relative overflow-hidden"
+      >
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="w-full h-full bg-[url('https://source.unsplash.com/random/1920x1080/?texture')] bg-cover bg-center"></div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.h2
+            className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#000000] text-center mb-4 font-dancing-script"
+            initial="hidden"
+            animate={contactInView ? "visible" : "hidden"}
+            variants={textVariants}
+          >
+            Connect with INKOWO
+          </motion.h2>
+          <motion.p
+            className="text-base sm:text-lg md:text-xl text-[#000000] text-center mb-12 leading-relaxed font-light max-w-3xl mx-auto"
+            initial="hidden"
+            animate={contactInView ? "visible" : "hidden"}
+            variants={textVariants}
+          >
+            Become a private client or reach out for press and business opportunities.
+          </motion.p>
+          <div className="flex flex-col md:flex-row gap-8 max-w-6xl mx-auto">
+            <motion.div
+              className="flex-1 bg-white/95 backdrop-blur-lg p-8 sm:p-10 rounded-2xl shadow-2xl border border-[#000000]/10 relative overflow-hidden"
+              initial="hidden"
+              animate={contactInView ? "visible" : "hidden"}
+              variants={textVariants}
+            >
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FFD700] to-[#A8B5A2]"></div>
+              <motion.h3
+                className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#000000] mb-8 text-center font-dancing-script"
+                initial="hidden"
+                animate={contactInView ? "visible" : "hidden"}
+                variants={textVariants}
+              >
+                Private Client Application
+              </motion.h3>
+              <form className="space-y-6">
+                <motion.div variants={textVariants} initial="hidden" animate={contactInView ? "visible" : "hidden"}>
+                  <label htmlFor="client-name" className="block text-[#000000] font-bold text-sm sm:text-base mb-2">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    id="client-name"
+                    className="w-full p-3 bg-transparent border-b-2 border-[#000000] focus:border-[#FFD700] focus:outline-none transition-colors text-[#000000] text-sm sm:text-base rounded-sm"
+                    placeholder="Your Name"
+                  />
+                </motion.div>
+                <motion.div variants={textVariants} initial="hidden" animate={contactInView ? "visible" : "hidden"}>
+                  <label htmlFor="client-intent" className="block text-[#000000] font-bold text-sm sm:text-base mb-2">
+                    Intent
+                  </label>
+                  <textarea
+                    id="client-intent"
+                    className="w-full p-3 bg-transparent border-b-2 border-[#000000] focus:border-[#FFD700] focus:outline-none transition-colors text-[#000000] text-sm sm:text-base rounded-sm"
+                    placeholder="Describe your interest in becoming a private client"
+                    rows="4"
+                  ></textarea>
+                </motion.div>
+                <motion.div variants={textVariants} initial="hidden" animate={contactInView ? "visible" : "hidden"}>
+                  <label
+                    htmlFor="client-moodboard"
+                    className="block text-[#000000] font-bold text-sm sm:text-base mb-2"
+                  >
+                    Upload Moodboard
+                  </label>
+                  <input
+                    type="file"
+                    id="client-moodboard"
+                    className="w-full p-3 text-[#000000] text-sm sm:text-base file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#A8B5A2] file:text-[#000000] hover:file:bg-[#FFD700] transition-colors"
+                    accept="image/*"
+                  />
+                </motion.div>
+                <motion.button
+                  type="submit"
+                  className="w-full bg-[#000000] text-white py-3 rounded-full hover:bg-[#FFD700] hover:text-[#000000] transition-all duration-300 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg"
+                  variants={textVariants}
+                  initial="hidden"
+                  animate={contactInView ? "visible" : "hidden"}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Apply as Private Client
+                </motion.button>
+              </form>
+              <motion.p
+                className="text-center text-[#000000] text-sm sm:text-base mt-6 font-light italic"
+                variants={textVariants}
+                initial="hidden"
+                animate={contactInView ? "visible" : "hidden"}
+              >
+                Join the exclusive world of INKOWO couture.
+              </motion.p>
+            </motion.div>
+            <motion.div
+              className="flex-1 bg-white/95 backdrop-blur-lg p-8 sm:p-10 rounded-2xl shadow-2xl border border-[#000000]/10 relative overflow-hidden"
+              initial="hidden"
+              animate={contactInView ? "visible" : "hidden"}
+              variants={textVariants}
+            >
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FFD700] to-[#A8B5A2]"></div>
+              <motion.h3
+                className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#000000] mb-8 text-center font-dancing-script"
+                initial="hidden"
+                animate={contactInView ? "visible" : "hidden"}
+                variants={textVariants}
+              >
+                Press & Business Inquiries
+              </motion.h3>
+              <form className="space-y-6">
+                <motion.div variants={textVariants} initial="hidden" animate={contactInView ? "visible" : "hidden"}>
+                  <label htmlFor="press-name" className="block text-[#000000] font-bold text-sm sm:text-base mb-2">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    id="press-name"
+                    className="w-full p-3 bg-transparent border-b-2 border-[#000000] focus:border-[#FFD700] focus:outline-none transition-colors text-[#000000] text-sm sm:text-base rounded-sm"
+                    placeholder="Your Name"
+                  />
+                </motion.div>
+                <motion.div variants={textVariants} initial="hidden" animate={contactInView ? "visible" : "hidden"}>
+                  <label htmlFor="press-email" className="block text-[#000000] font-bold text-sm sm:text-base mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    id="press-email"
+                    className="w-full p-3 bg-transparent border-b-2 border-[#000000] focus:border-[#FFD700] focus:outline-none transition-colors text-[#000000] text-sm sm:text-base rounded-sm"
+                    placeholder="Your Email"
+                  />
+                </motion.div>
+                <motion.div variants={textVariants} initial="hidden" animate={contactInView ? "visible" : "hidden"}>
+                  <label htmlFor="press-message" className="block text-[#000000] font-bold text-sm sm:text-base mb-2">
+                    Message
+                  </label>
+                  <textarea
+                    id="press-message"
+                    className="w-full p-3 bg-transparent border-b-2 border-[#000000] focus:border-[#FFD700] focus:outline-none transition-colors text-[#000000] text-sm sm:text-base rounded-sm"
+                    placeholder="Your inquiry or message"
+                    rows="4"
+                  ></textarea>
+                </motion.div>
+                <motion.button
+                  type="submit"
+                  className="w-full bg-[#000000] text-white py-3 rounded-full hover:bg-[#FFD700] hover:text-[#000000] transition-all duration-300 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg"
+                  variants={textVariants}
+                  initial="hidden"
+                  animate={contactInView ? "visible" : "hidden"}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Submit Inquiry
+                </motion.button>
+              </form>
+              <motion.p
+                className="text-center text-[#000000] text-sm sm:text-base mt-6 font-light italic"
+                variants={textVariants}
+                initial="hidden"
+                animate={contactInView ? "visible" : "hidden"}
+              >
+                Partner with INKOWO for unparalleled opportunities.
+              </motion.p>
+            </motion.div>
+          </div>
+        </div>
+        {contactInView && <div>{console.log("Contact section in view")}</div>}
+      </section>
+      <div className="border-t-2 border-white/50 shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
+      <Footer />
     </div>
+
   )
 }
 

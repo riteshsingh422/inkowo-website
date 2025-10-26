@@ -15,7 +15,7 @@ body {
   color: #fff;
   font-family: "Lato", sans-serif;
   overflow-x: hidden;
-  background-color: #141414;
+  background-color: transparent; /* Ensure no background color */
 }
 
 .navbar {
@@ -62,6 +62,7 @@ li {
 }
 
 a {
+  color: #fff;
   text-decoration: none;
 }
 
@@ -77,12 +78,18 @@ a {
 }
 
 .wrapper {
-  display: flex;
+  height: 100vh; /* Restrict to viewport height */
+  width: 100vw;
+  overflow: hidden; /* Prevent extra scrollable space */
+  position: relative;
 }
 
 .videoSection {
   width: 100vw;
-  flex-shrink: 0;
+  height: 100vh; /* Full viewport height */
+  position: absolute;
+  top: 0;
+  left: 0;
   overflow: hidden;
 }
 
@@ -91,7 +98,9 @@ a {
   width: 100vw;
   object-fit: cover;
   z-index: -2;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .imgContainer {
@@ -105,292 +114,6 @@ a {
   object-fit: cover;
   height: 100%;
   width: 100%;
-}
-
-.section {
-  background-color: #141414;
-  padding: 7rem;
-}
-
-.boxesContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 12rem;
-  align-items: center;
-  padding: 2rem 0;
-}
-
-.columns {
-  display: flex;
-  gap: 2.5rem;
-  width: 95%;
-  margin: 0 auto;
-  align-items: flex-start;
-}
-
-.col {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-/* Redesigned card system with more elegant proportions and enhanced visual effects */
-.card {
-  border-radius: 16px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  animation: fadeInUp 0.8s ease-out forwards;
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
-.card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.card:hover::before {
-  opacity: 1;
-}
-
-.card img {
-  display: block;
-  object-fit: cover;
-  object-position: center center;
-  border-radius: 16px;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.4s ease;
-}
-
-.card:hover img {
-  transform: scale(1.05);
-}
-
-/* Redesigned column layouts with golden ratio-based proportions for maximum visual appeal */
-.col1,
-.col3 {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.col1 {
-  flex: 1.618; /* Golden ratio */
-  flex-direction: column;
-}
-
-.col3 {
-  flex: 1;
-  flex-direction: column;
-}
-
-/* Box 1 - Elegant asymmetrical layout with focal point */
-.box1 .col1 {
-  gap: 1.5rem;
-}
-
-.box1 .col1 .card:first-child {
-  width: 200px;
-  height: 320px; /* Golden ratio proportion */
-}
-
-.box1 .col1 .card:nth-child(2) {
-  width: 420px;
-  height: 260px; /* Landscape focal piece */
-  margin-top: 2rem;
-}
-
-.box1 .col3 {
-  gap: 1.5rem;
-  margin-top: 3rem;
-}
-
-.box1 .col3 .card:first-child {
-  width: 280px;
-  height: 180px;
-}
-
-.box1 .col3 .card:nth-child(2) {
-  width: 180px;
-  height: 280px; /* Portrait complement */
-  margin-left: 2rem;
-}
-
-.box1 .col3 .card:nth-child(3) {
-  width: 240px;
-  height: 150px;
-  margin-top: -1rem;
-}
-
-/* Box 2 - Balanced composition with rhythmic spacing */
-.box2 .col1 {
-  gap: 2rem;
-}
-
-.box2 .col1 .card:first-child {
-  width: 180px;
-  height: 290px; /* Tall portrait */
-}
-
-.box2 .col1 .card:nth-child(2) {
-  width: 350px;
-  height: 220px; /* Wide landscape */
-  margin-left: 3rem;
-  margin-top: 1rem;
-}
-
-.box2 .col3 {
-  gap: 1.8rem;
-  margin-top: 1.5rem;
-}
-
-.box2 .col3 .card:nth-child(1) {
-  width: 260px;
-  height: 320px; /* Dominant vertical */
-}
-
-.box2 .col3 .card:nth-child(2) {
-  width: 200px;
-  height: 160px;
-  margin-left: 1.5rem;
-}
-
-.box2 .col3 .card:nth-child(3) {
-  width: 380px;
-  height: 180px;
-  margin-top: 1rem;
-}
-
-/* Box 3 - Dynamic mosaic layout with visual flow */
-.box3 .col1 {
-  gap: 1.5rem;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-width: 500px;
-}
-
-.box3 .col1 .card:nth-child(1) {
-  width: 220px;
-  height: 280px;
-}
-
-.box3 .col1 .card:nth-child(2) {
-  width: 200px;
-  height: 160px;
-  margin-top: 2rem;
-}
-
-.box3 .col1 .card:nth-child(3) {
-  width: 300px;
-  height: 180px;
-  margin-top: -1rem;
-}
-
-.box3 .col1 .card:nth-child(4) {
-  width: 180px;
-  height: 220px;
-  margin-left: 1rem;
-}
-
-.box3 .col3 {
-  margin-top: 4rem;
-}
-
-.box3 .col3 .card {
-  width: 420px;
-  height: 420px; /* Perfect square as anchor */
-  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.6);
-}
-
-/* Enhanced text column positioning for better visual balance */
-.col2 {
-  margin-left: auto;
-  flex: 1;
-  text-align: right;
-  padding-left: 3rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 400px;
-}
-
-.col2 h1 {
-  font-family: w;
-  font-size: clamp(60px, 8vw, 100px);
-  text-transform: capitalize;
-  position: relative;
-  top: 0;
-  left: 0;
-  line-height: 0.9;
-  margin-bottom: 2rem;
-}
-
-.col2 span {
-  font-size: 8px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  opacity: 0.7;
-}
-
-.line {
-  height: 1px;
-  width: 50px;
-  background-color: rgba(255, 255, 255, 0.1);
-  margin: 2rem 0;
-}
-
-.textBox p {
-  font-size: 12px;
-  line-height: 1.9;
-  padding-bottom: 1rem;
-  opacity: 0.7;
-}
-
-.footer {
-  background-color: #141414;
-  display: flex;
-  justify-content: space-between;
-  padding: 1.5rem 3rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* New styles for image box */
-.imgBox {
-  width: 400px; /* Set a fixed width for the box */
-  height: 400px; /* Set a fixed height for the box */
-  overflow: hidden; /* Hide overflow */
-  border: 2px solid rgba(255, 255, 255, 0.2); /* Optional border for box effect */
-}
-
-.imgBox img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ensure the image fits the box */
 }
 
 .textContent {
@@ -451,9 +174,8 @@ a {
   top: 0;
   height: 100vh;
   width: 100vw;
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  display: grid;
+  grid-template-columns: 2fr 1fr;
 }
 
 .leftSide {
@@ -507,62 +229,7 @@ a {
   transform: translateX(20px);
 }
 
-.box1 .card:nth-child(1) {
-  animation-delay: 0.1s;
-}
-.box1 .card:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.box1 .card:nth-child(3) {
-  animation-delay: 0.3s;
-}
-.box1 .card:nth-child(4) {
-  animation-delay: 0.4s;
-}
-.box1 .card:nth-child(5) {
-  animation-delay: 0.5s;
-}
-
-.box2 .card:nth-child(1) {
-  animation-delay: 0.6s;
-}
-.box2 .card:nth-child(2) {
-  animation-delay: 0.7s;
-}
-.box2 .card:nth-child(3) {
-  animation-delay: 0.8s;
-}
-.box2 .card:nth-child(4) {
-  animation-delay: 0.9s;
-}
-.box2 .card:nth-child(5) {
-  animation-delay: 1.0s;
-}
-
-.box3 .card:nth-child(1) {
-  animation-delay: 1.1s;
-}
-.box3 .card:nth-child(2) {
-  animation-delay: 1.2s;
-}
-.box3 .card:nth-child(3) {
-  animation-delay: 1.3s;
-}
-.box3 .card:nth-child(4) {
-  animation-delay: 1.4s;
-}
-.box3 .card:nth-child(5) {
-  animation-delay: 1.5s;
-}
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Added responsive styles for tablets and mobile devices */
+/* Responsive Styles */
 
 /* Tablet Styles (768px - 1024px) */
 @media screen and (max-width: 1024px) {
@@ -578,103 +245,8 @@ a {
     font-size: 24px;
   }
 
-  .section {
-    padding: 4rem 2rem;
-  }
-
-  .boxesContainer {
-    gap: 8rem;
-  }
-
-  .columns {
-    gap: 2rem;
-    width: 100%;
-  }
-
-  .col2 {
-    padding-left: 2rem;
-  }
-
-  .col2 h1 {
-    font-size: clamp(50px, 7vw, 80px);
-  }
-
-  /* Tablet card sizes */
-  .box1 .col1 .card:first-child {
-    width: 160px;
-    height: 260px;
-  }
-
-  .box1 .col1 .card:nth-child(2) {
-    width: 320px;
-    height: 200px;
-  }
-
-  .box1 .col3 .card:first-child {
-    width: 220px;
-    height: 140px;
-  }
-
-  .box1 .col3 .card:nth-child(2) {
-    width: 140px;
-    height: 220px;
-    margin-left: 1rem;
-  }
-
-  .box1 .col3 .card:nth-child(3) {
-    width: 180px;
-    height: 120px;
-  }
-
-  .box2 .col1 .card:first-child {
-    width: 140px;
-    height: 230px;
-  }
-
-  .box2 .col1 .card:nth-child(2) {
-    width: 280px;
-    height: 180px;
-    margin-left: 2rem;
-  }
-
-  .box2 .col3 .card:nth-child(1) {
-    width: 200px;
-    height: 260px;
-  }
-
-  .box2 .col3 .card:nth-child(2) {
-    width: 160px;
-    height: 130px;
-  }
-
-  .box2 .col3 .card:nth-child(3) {
-    width: 300px;
-    height: 140px;
-  }
-
-  .box3 .col1 .card:nth-child(1) {
-    width: 180px;
-    height: 220px;
-  }
-
-  .box3 .col1 .card:nth-child(2) {
-    width: 160px;
-    height: 130px;
-  }
-
-  .box3 .col1 .card:nth-child(3) {
-    width: 240px;
-    height: 140px;
-  }
-
-  .box3 .col1 .card:nth-child(4) {
-    width: 140px;
-    height: 180px;
-  }
-
-  .box3 .col3 .card {
-    width: 320px;
-    height: 320px;
+  .vContainer {
+    grid-template-columns: 2fr 1fr;
   }
 
   .leftSide {
@@ -727,88 +299,11 @@ a {
     font-size: 20px;
   }
 
-  .section {
-    padding: 2rem 1rem;
-  }
-
-  .boxesContainer {
-    gap: 4rem;
-  }
-
-  .columns {
-    flex-direction: column;
-    gap: 2rem;
-    align-items: center;
-  }
-
-  .col1,
-  .col3 {
-    flex: 1;
-    width: 100%;
-    justify-content: center;
-  }
-
-  .col2 {
-    text-align: center;
-    padding-left: 0;
-    margin-left: 0;
-    order: -1;
-    margin-bottom: 2rem;
-  }
-
-  .col2 h1 {
-    font-size: clamp(40px, 10vw, 60px);
-    margin-bottom: 1rem;
-  }
-
-  .line {
-    margin: 1rem auto;
-  }
-
-  /* Mobile card sizes - simplified layout */
-  .box1 .col1,
-  .box2 .col1,
-  .box3 .col1 {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-    max-width: 100%;
-    margin-top: 0;
-  }
-
-  .box1 .col3,
-  .box2 .col3,
-  .box3 .col3 {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-    margin-top: 0;
-  }
-
-  .box1 .col1 .card,
-  .box1 .col3 .card,
-  .box2 .col1 .card,
-  .box2 .col3 .card,
-  .box3 .col1 .card,
-  .box3 .col3 .card {
-    width: 140px;
-    height: 140px;
-    margin: 0;
-  }
-
-  /* Special cases for variety */
-  .box1 .col1 .card:nth-child(2),
-  .box2 .col1 .card:nth-child(2),
-  .box3 .col1 .card:nth-child(3) {
-    width: 280px;
-    height: 140px;
-  }
-
   .vContainer {
+    display: flex;
     flex-direction: column;
     padding: 2rem 1rem;
+    align-items: center;
   }
 
   .leftSide {
@@ -862,18 +357,6 @@ a {
     transform: translateY(100px);
   }
 
-  .footer {
-    padding: 1rem;
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
-  }
-
-  .imgBox {
-    width: 140px;
-    height: 140px;
-  }
-
   .tv {
     flex-direction: column;
     align-items: center;
@@ -903,10 +386,6 @@ a {
     letter-spacing: 2px;
   }
 
-  .col2 h1 {
-    font-size: clamp(30px, 8vw, 50px);
-  }
-
   .leftSide {
     padding: 1rem;
   }
@@ -918,19 +397,5 @@ a {
 
   .rightSide p {
     font-size: 10px;
-  }
-
-  /* Align all card elements and text to the right in portfolio sections */
-  .box1 .col1,
-  .box1 .col3,
-  .box2 .col1,
-  .box2 .col3,
-  .box3 .col1,
-  .box3 .col3,
-  .box1 .col2,
-  .box2 .col2,
-  .box3 .col2 {
-    flex-wrap: nowrap;
-    margin-left: 550%;
   }
 }

@@ -1,33 +1,32 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Menu from "./components/Menu";
 import Contact from "./components/Contact";
 import Home from "./pages/Home";
 import Collection from "./components/Collection";
 import Events from "./components/Events";
-import WelcomeLoader from "./components/WelcomeLoader"; // Adjust path if needed
+import WelcomeLoader from "./components/WelcomeLoader";
+import Footer from "./components/Footer";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading time (e.g., 3 seconds)
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 3000);
 
-    return () => clearTimeout(timer); // Cleanup timer on component unmount
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <Router>
       {isLoading && <WelcomeLoader />}
-      <Menu />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/collection" element={<Collection />} />
         <Route path="/events" element={<Events />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/footer" element={<Footer />} />
       </Routes>
     </Router>
   );
