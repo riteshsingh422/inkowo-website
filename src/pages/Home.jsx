@@ -23,371 +23,370 @@ import event6 from "../assets/images/event6.jpg"
 import event7 from "../assets/images/event7.jpg"
 import event8 from "../assets/images/event8.jpg"
 // New image imports for Gallery Section
-import jodhabai1 from "../assets/images/jodhabai1.jpg"
-import jodhabai2 from "../assets/images/jodhabai2.jpg"
-import jodhabai5 from "../assets/images/jodhabai5.jpg"
-import jodhabaidetail from "../assets/images/jodhabaidetail.webp"
-import jodhabaimain from "../assets/images/jodhabaimain.jpg"
-import ranipadmavati1 from "../assets/images/ranipadmavati1.jpg"
-import ranipadmavati2 from "../assets/images/ranipadmavati2.jpg"
-import ranipadmavati5 from "../assets/images/ranipadmavati5.jpg"
-import ranipadmavatidetail from "../assets/images/ranipadmavatidetail.jpg"
-import ranipadmavatimain from "../assets/images/ranipadmavatimain.jpg"
-import ranilaxmi1 from "../assets/images/ranilaxmi1.jpg"
-import ranilaxmi2 from "../assets/images/ranilaxmi2.jpg"
-import ranilaxmidetail from "../assets/images/ranilaxmidetail.jpeg"
-import ranilaxmimain from "../assets/images/ranilaxmimain.jpg"
+      import jodhabai1 from "../assets/images/jodhabai1.jpg"
+      import jodhabai2 from "../assets/images/jodhabai2.jpg"
+      import jodhabai5 from "../assets/images/jodhabai5.jpg"
+      import jodhabaidetail from "../assets/images/jodhabaidetail.webp"
+      import jodhabaimain from "../assets/images/jodhabaimain.jpg"
+      import ranipadmavati1 from "../assets/images/ranipadmavati1.jpg"
+      import ranipadmavati2 from "../assets/images/ranipadmavati2.jpg"
+      import ranipadmavati5 from "../assets/images/ranipadmavati5.jpg"
+      import ranipadmavatidetail from "../assets/images/ranipadmavatidetail.jpg"
+      import ranipadmavatimain from "../assets/images/ranipadmavatimain.jpg"
+      import ranilaxmi1 from "../assets/images/ranilaxmi1.jpg"
+      import ranilaxmi2 from "../assets/images/ranilaxmi2.jpg"
+      import ranilaxmidetail from "../assets/images/ranilaxmidetail.jpeg"
+      import ranilaxmimain from "../assets/images/ranilaxmimain.jpg"
 
-const Home = () => {
-  const heroRef = useRef(null)
-  const { ref: customRef, inView: customInView } = useInView({ triggerOnce: false, threshold: 0.2 })
-  const { ref: eventsRef, inView: eventsInView } = useInView({ triggerOnce: false, threshold: 0.2 })
-  const { ref: contactRef, inView: contactInView } = useInView({ triggerOnce: false, threshold: 0.2 })
-  const { ref: aboutRef, inView: aboutInView } = useInView({ triggerOnce: false, threshold: 0.2 })
+      const Home = () => {
+        const heroRef = useRef(null)
+        const { ref: customRef, inView: customInView } = useInView({ triggerOnce: false, threshold: 0.2 })
+        const { ref: eventsRef, inView: eventsInView } = useInView({ triggerOnce: false, threshold: 0.2 })
+        const { ref: contactRef, inView: contactInView } = useInView({ triggerOnce: false, threshold: 0.2 })
+        const { ref: aboutRef, inView: aboutInView } = useInView({ triggerOnce: false, threshold: 0.2 })
 
-  // State for Hero Section slider
-  const [currentHeroIndex, setCurrentHeroIndex] = useState(0)
-  const heroImages = [WalkingGirlImage, AboutImage1]
+        // State for Hero Section slider
+        const [currentHeroIndex, setCurrentHeroIndex] = useState(0)
+        const heroImages = [WalkingGirlImage, AboutImage1]
 
-  // Automatic image change effect for Hero Section
-  useEffect(() => {
-    const heroInterval = setInterval(() => {
-      setCurrentHeroIndex((prevIndex) => (prevIndex + 1) % heroImages.length)
-    }, 3000) // Change image every 3 seconds
-    return () => clearInterval(heroInterval) // Cleanup on unmount
-  }, [heroImages.length])
+        // Automatic image change effect for Hero Section
+        useEffect(() => {
+          const heroInterval = setInterval(() => {
+            setCurrentHeroIndex((prevIndex) => (prevIndex + 1) % heroImages.length)
+          }, 3000) // Change image every 3 seconds
+          return () => clearInterval(heroInterval) // Cleanup on unmount
+        }, [heroImages.length])
 
-  // Preload hero images to prevent loading delays
-  useEffect(() => {
-    heroImages.forEach((image) => {
-      const img = new Image()
-      img.src = image
-    })
-  }, [])
+        // Preload hero images to prevent loading delays
+        useEffect(() => {
+          heroImages.forEach((image) => {
+            const img = new Image()
+            img.src = image
+          })
+        }, [])
 
-  // Animation variants for Custom, Events, Contact, and About sections
-  const imageVariants = {
-    hidden: { opacity: 0, x: -100 },
-    visible: { opacity: 1, x: 0, transition: { duration: 1.2, ease: "easeInOut" } },
-  }
+        // Animation variants for Custom, Events, Contact, and About sections
+        const imageVariants = {
+          hidden: { opacity: 0, x: -100 },
+          visible: { opacity: 1, x: 0, transition: { duration: 1.2, ease: "easeInOut" } },
+        }
 
-  const textVariants = {
-    hidden: { opacity: 0, x: 100 },
-    visible: { opacity: 1, x: 0, transition: { duration: 1.2, ease: "easeInOut" } },
-  }
+        const textVariants = {
+          hidden: { opacity: 0, x: 100 },
+          visible: { opacity: 1, x: 0, transition: { duration: 1.2, ease: "easeInOut" } },
+        }
 
-  const headingVariants = {
-    hidden: { opacity: 0, y: 50, rotate: 5 },
-    visible: { opacity: 1, y: 0, rotate: 0, transition: { duration: 1.2, ease: "easeInOut" } },
-  }
+        const headingVariants = {
+          hidden: { opacity: 0, y: 50, rotate: 5 },
+          visible: { opacity: 1, y: 0, rotate: 0, transition: { duration: 1.2, ease: "easeInOut" } },
+        }
 
-  // Animation variants for Hero Section image change (simple fade)
-  const fadeVariants = {
-    initial: { opacity: 0 },
-    animate: { opacity: 1, transition: { duration: 0.5 } },
-    exit: { opacity: 0, transition: { duration: 0.5 } },
-  }
+        // Animation variants for Hero Section image change (simple fade)
+        const fadeVariants = {
+          initial: { opacity: 0 },
+          animate: { opacity: 1, transition: { duration: 0.5 } },
+          exit: { opacity: 0, transition: { duration: 0.5 } },
+        }
 
-  return (
-    <div className="overflow-x-hidden" style={{ "--smooth-scroll": "true" }}>
-      <Navbar heroRef={heroRef} />
-
-      {/* Hero Section (Unchanged) */}
-      <section
-        ref={heroRef}
-        className="h-[70vh] sm:h-[70vh] md:h-screen relative m-0 p-0 overflow-hidden"
-        style={{ 
-          backgroundColor: "#000000", // Black fallback to match overlay
-          backgroundImage: `url(${heroImages[0]})`, // First image as fallback
-          backgroundSize: "cover",
-          backgroundPosition: "center 20%"
-        }}
-      >
-        <div className="absolute top-0 left-0 w-full h-full z-5">
-          <AnimatePresence initial={false} mode="wait">
-            <motion.img
-              key={currentHeroIndex}
-              src={heroImages[currentHeroIndex]}
-              alt={`Hero Image ${currentHeroIndex + 1}`}
-              className="w-full h-full object-cover object-center"
-              style={{ objectPosition: "center 20%" }}
-              variants={fadeVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              onError={() => console.log(`Failed to load image ${heroImages[currentHeroIndex]}`)}
-            />
-          </AnimatePresence>
-        </div>
-        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-10"></div>
-        <div className="absolute inset-0 flex items-center sm:items-center justify-center z-20"></div>
-      </section>
-      <div className="border-t-2 border-white/50 shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
-
-      <section ref={aboutRef} className="py-20 bg-[#F5F1E8] min-h-auto relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Header Section */}
-          <motion.div
-            className="text-center mb-16"
-            initial="hidden"
-            animate={aboutInView ? "visible" : "hidden"}
-            variants={textVariants}
-          >
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 text-sm sm:text-base text-[#666666]">
-              <div className="flex items-center gap-2">
-                <span className="text-lg">🌿</span>
-                <span>Sustainable</span>
-              </div>
-              <div className="hidden sm:block w-1 h-1 bg-[#999999] rounded-full"></div>
-              <div className="flex items-center gap-2">
-                <span>Handmade</span>
-              </div>
-              <div className="hidden sm:block w-1 h-1 bg-[#999999] rounded-full"></div>
-              <div className="flex items-center gap-2">
-                <span className="text-lg">💚</span>
-                <span>Comfortable</span>
-              </div>
-            </div>
-
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#333333] mb-4 leading-tight">
-              Bringing Slow Fashion to your everyday
-            </h2>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#333333] mb-8 leading-tight">
-              journeys, made with love
-            </h2>
-
-            <a
-              href="#"
-              className="inline-block text-[#666666] font-semibold border-b-2 border-[#666666] hover:border-[#333333] hover:text-[#333333] transition-colors text-sm sm:text-base"
+        return (
+          <div className="overflow-x-hidden" style={{ "--smooth-scroll": "true" }}>
+          <Navbar heroRef={heroRef} />
+            {/* Hero Section (Unchanged) */}
+            <section
+              ref={heroRef}
+              className="h-[70vh] sm:h-[70vh] md:h-screen relative m-0 p-0 overflow-hidden"
+              style={{ 
+                backgroundColor: "#000000", // Black fallback to match overlay
+                backgroundImage: `url(${heroImages[0]})`, // First image as fallback
+                backgroundSize: "cover",
+                backgroundPosition: "center 20%"
+              }}
             >
-              Read Our Story
-            </a>
-          </motion.div>
+              <div className="absolute top-0 left-0 w-full h-full z-5">
+                <AnimatePresence initial={false} mode="wait">
+                  <motion.img
+                    key={currentHeroIndex}
+                    src={heroImages[currentHeroIndex]}
+                    alt={`Hero Image ${currentHeroIndex + 1}`}
+                    className="w-full h-full object-cover object-center"
+                    style={{ objectPosition: "center 20%" }}
+                    variants={fadeVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    onError={() => console.log(`Failed to load image ${heroImages[currentHeroIndex]}`)}
+                  />
+                </AnimatePresence>
+              </div>
+              <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-10"></div>
+              <div className="absolute inset-0 flex items-center sm:items-center justify-center z-20"></div>
+            </section>
+            <div className="border-t-2 border-white/50 shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
 
-          {/* 4 Feature Cards */}
-          <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-            initial="hidden"
-            animate={aboutInView ? "visible" : "hidden"}
-            variants={textVariants}
-          >
-            {[
-              {
-                title: "Eco-Friendly",
-                icon: "🌱",
-              },
-              {
-                title: "Zero Waste",
-                icon: "♻️",
-              },
-              {
-                title: "Plastic and Carbon Neutral",
-                icon: "🌿",
-              },
-              {
-                title: "Quality Guarantee",
-                icon: "⭐",
-              },
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                className="bg-[#6B8E6F] rounded-3xl p-8 sm:p-10 flex flex-col items-center justify-center text-center transform hover:-translate-y-2 transition-transform duration-300 shadow-lg"
-                variants={imageVariants}
-              >
-                <div className="text-5xl sm:text-6xl mb-6 text-[#C9B89A]">{feature.icon}</div>
-                <h3 className="text-xl sm:text-2xl font-semibold text-[#C9B89A]">{feature.title}</h3>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-      <div className="border-t-2 border-white/50 shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
-
-      <PortfolioSection />
-      <div className="border-t-2 border-white/50 shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
-      
-      {/* Gallery Section (Updated with new images and clickable redirects) */}
-      <section
-      ref={customRef}
-      className="py-24 bg-gradient-to-b from-[#1C2526] to-[#2E3532] min-h-[80vh] relative overflow-hidden"
-    >
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div className="w-full h-full bg-[url('https://source.unsplash.com/random/1920x1080/?luxury')] bg-cover bg-center"></div>
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-b from-[#FFD700]/10 to-[#1C2526]/20 pointer-events-none"></div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="space-y-24">
-          {[
-            {
-              id: 1,
-              name: "Jodha Bai",
-              subtitle: "1 October 1542",
-              description: "Their union symbolized religious tolerance. She was called Queen Mother during Akbar's and her son's reign.",
-              details: "Jodha Bai was Akbar's first and last love, and the longest-serving Hindu Mughal Empress.",
-              images: [
-                jodhabai1,
-                jodhabai2,
-                jodhabaimain,
-                jodhabaidetail,
-                jodhabai5,
-              ],
-            },
-            {
-              id: 2,
-              name: "Rani Padmavati",
-              subtitle: "17 September 1303",
-              description: "Rani Padmavati, or Padmini, was the legendary queen of Mewar, known for her beauty.",
-              details: "She chose jauhar over dishonor when Alauddin Khilji attacked Chittorgarh, symbolizing Rajput pride forever.",
-              images: [
-                ranipadmavati1,
-                ranipadmavati2,
-                ranipadmavatimain,
-                ranipadmavatidetail,
-                ranipadmavati5,
-              ],
-            },
-            {
-              id: 3,
-              name: "Rani Lakshmibai",
-              subtitle: "19 November 1828",
-              description: "Rani Lakshmibai, born Manikarnika in 1828, learned horse riding, sword fighting, and archery young.",
-              details: "She led the 1857 revolt bravely, carrying her son and sword, dying fighting the British.",
-              images: [
-                ranilaxmi1,
-                ranilaxmi2,
-                ranilaxmimain,
-                ranilaxmidetail,
-              ],
-            },
-          ].map((item, index) => (
-            <div key={item.id} className="gallery-item">
-              <div
-                className={`grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12 items-center ${
-                  index % 2 === 1 ? "md:grid-flow-dense" : ""
-                }`}
-              >
-                {/* Images Column (Left) */}
-                <div
-                  className={`space-y-4 ${index % 2 === 1 ? "md:col-start-3" : ""}`}
+            <section ref={aboutRef} className="py-20 bg-[#F5F1E8] min-h-auto relative overflow-hidden">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                {/* Header Section */}
+                <motion.div
+                  className="text-center mb-16"
+                  initial="hidden"
+                  animate={aboutInView ? "visible" : "hidden"}
+                  variants={textVariants}
                 >
-                  <div className="grid grid-cols-2 gap-4">
-                    {item.images.slice(0, 2).map((img, i) => (
-                      <Link to="/collection" key={i}>
-                        <div className="overflow-hidden rounded-xl aspect-square cursor-pointer hover:opacity-80 transition-opacity">
-                          <div className="relative w-full h-full bg-gradient-to-br from-[#FFD700]/20 to-[#1C2526]/20 border border-[#FFD700]/20 shadow-lg">
-                            <img
-                              src={img}
-                              alt={`${item.name} ${i + 1}`}
-                              className="w-full h-full object-cover"
-                              onError={() =>
-                                console.log(`Failed to load image: ${item.name} ${i + 1}`)
-                              }
-                            />
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                  <Link to="/collection">
-                    <div className="overflow-hidden rounded-xl aspect-video cursor-pointer hover:opacity-80 transition-opacity">
-                      <div className="relative w-full h-full bg-gradient-to-br from-[#FFD700]/20 to-[#1C2526]/20 border border-[#FFD700]/20 shadow-lg">
-                        <img
-                          src={item.images[2]}
-                          alt={`${item.name} main`}
-                          className="w-full h-full object-cover"
-                          onError={() =>
-                            console.log(`Failed to load image: ${item.name} main`)
-                          }
-                        />
-                      </div>
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 text-sm sm:text-base text-[#666666]">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">🌿</span>
+                      <span>Sustainable</span>
                     </div>
-                  </Link>
-                </div>
+                    <div className="hidden sm:block w-1 h-1 bg-[#999999] rounded-full"></div>
+                    <div className="flex items-center gap-2">
+                      <span>Handmade</span>
+                    </div>
+                    <div className="hidden sm:block w-1 h-1 bg-[#999999] rounded-full"></div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">💚</span>
+                      <span>Comfortable</span>
+                    </div>
+                  </div>
 
-                {/* Content Column */}
-                <div
-                  className={`space-y-6 ${
-                    index % 2 === 1 ? "md:col-start-1 md:col-end-3" : "md:col-start-2"
-                  }`}
-                >
-                  <div className="space-y-2">
-                    <p className="text-[#FFD700] text-sm tracking-widest font-light">
-                      ROYAL HISTORY
-                    </p>
-                    <h3 className="text-4xl sm:text-5xl font-light text-white font-dancing-script">
-                      {item.name}
-                    </h3>
-                    <p className="text-gray-300 text-sm tracking-wide">{item.subtitle}</p>
-                  </div>
-                  <div className="w-12 h-px bg-gradient-to-r from-[#FFD700] to-transparent"></div>
-                  <div className="space-y-4 text-gray-300 leading-relaxed">
-                    <p className="text-sm">{item.description}</p>
-                    <p className="text-sm">{item.details}</p>
-                  </div>
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#333333] mb-4 leading-tight">
+                    Bringing Slow Fashion to your everyday
+                  </h2>
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#333333] mb-8 leading-tight">
+                    journeys, made with love
+                  </h2>
+
                   <a
                     href="#"
-                    className="inline-block px-6 py-2 text-sm tracking-widest text-[#FFD700] border-b-2 border-[#FFD700] font-light"
+                    className="inline-block text-[#666666] font-semibold border-b-2 border-[#666666] hover:border-[#333333] hover:text-[#333333] transition-colors text-sm sm:text-base"
                   >
-                    LEARN MORE
+                    Read Our Story
                   </a>
-                </div>
+                </motion.div>
 
-                {/* Right Images Column */}
-                <div
-                  className={`space-y-4 ${index % 2 === 1 ? "md:col-start-1" : "md:col-start-3"}`}
+                {/* 4 Feature Cards */}
+                <motion.div
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                  initial="hidden"
+                  animate={aboutInView ? "visible" : "hidden"}
+                  variants={textVariants}
                 >
-                  <Link to="/collection">
-                    <div className="overflow-hidden rounded-xl aspect-video cursor-pointer hover:opacity-80 transition-opacity">
-                      <div className="relative w-full h-full bg-gradient-to-br from-[#FFD700]/20 to-[#1C2526]/20 border border-[#FFD700]/20 shadow-lg">
-                        <img
-                          src={item.images[3]}
-                          alt={`${item.name} detail`}
-                          className="w-full h-full object-cover"
-                          onError={() =>
-                            console.log(`Failed to load image: ${item.name} detail`)
-                          }
-                        />
-                      </div>
-                    </div>
-                  </Link>
-                  <div className="grid grid-cols-2 gap-4">
-                    {item.images.slice(4).map((img, i) => (
-                      <Link to="/collection" key={i}>
-                        <div className="overflow-hidden rounded-xl aspect-square cursor-pointer hover:opacity-80 transition-opacity">
-                          <div className="relative w-full h-full bg-gradient-to-br from-[#FFD700]/20 to-[#1C2526]/20 border border-[#FFD700]/20 shadow-lg">
-                            <img
-                              src={img}
-                              alt={`${item.name} ${i + 5}`}
-                              className="w-full h-full object-cover"
-                              onError={() =>
-                                console.log(`Failed to load image: ${item.name} ${i + 5}`)
-                              }
-                            />
+                  {[
+                    {
+                      title: "Eco-Friendly",
+                      icon: "🌱",
+                    },
+                    {
+                      title: "Zero Waste",
+                      icon: "♻️",
+                    },
+                    {
+                      title: "Plastic and Carbon Neutral",
+                      icon: "🌿",
+                    },
+                    {
+                      title: "Quality Guarantee",
+                      icon: "⭐",
+                    },
+                  ].map((feature, index) => (
+                    <motion.div
+                      key={index}
+                      className="bg-[#6B8E6F] rounded-3xl p-8 sm:p-10 flex flex-col items-center justify-center text-center transform hover:-translate-y-2 transition-transform duration-300 shadow-lg"
+                      variants={imageVariants}
+                    >
+                      <div className="text-5xl sm:text-6xl mb-6 text-[#C9B89A]">{feature.icon}</div>
+                      <h3 className="text-xl sm:text-2xl font-semibold text-[#C9B89A]">{feature.title}</h3>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+            </section>
+            <div className="border-t-2 border-white/50 shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
+
+            <PortfolioSection />
+            <div className="border-t-2 border-white/50 shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
+            
+            {/* Gallery Section (Updated with new images and clickable redirects) */}
+            <section
+        ref={customRef}
+        className="py-24 bg-[#F5F1E8] min-h-[80vh] relative overflow-hidden"
+      >
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="w-full h-full bg-[url('https://source.unsplash.com/random/1920x1080/?luxury')] bg-cover bg-center"></div>
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#5A7A5E]/10 to-[#F5F1E8]/20 pointer-events-none"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="space-y-24">
+            {[
+              {
+                id: 1,
+                name: "Jodha Bai",
+                subtitle: "1 October 1542",
+                description: "Their union symbolized religious tolerance. She was called Queen Mother during Akbar's and her son's reign.",
+                details: "Jodha Bai was Akbar's first and last love, and the longest-serving Hindu Mughal Empress.",
+                images: [
+                  jodhabai1,
+                  jodhabai2,
+                  jodhabaimain,
+                  jodhabaidetail,
+                  jodhabai5,
+                ],
+              },
+              {
+                id: 2,
+                name: "Rani Padmavati",
+                subtitle: "17 September 1303",
+                description: "Rani Padmavati, or Padmini, was the legendary queen of Mewar, known for her beauty.",
+                details: "She chose jauhar over dishonor when Alauddin Khilji attacked Chittorgarh, symbolizing Rajput pride forever.",
+                images: [
+                  ranipadmavati1,
+                  ranipadmavati2,
+                  ranipadmavatimain,
+                  ranipadmavatidetail,
+                  ranipadmavati5,
+                ],
+              },
+              {
+                id: 3,
+                name: "Rani Lakshmibai",
+                subtitle: "19 November 1828",
+                description: "Rani Lakshmibai, born Manikarnika in 1828, learned horse riding, sword fighting, and archery young.",
+                details: "She led the 1857 revolt bravely, carrying her son and sword, dying fighting the British.",
+                images: [
+                  ranilaxmi1,
+                  ranilaxmi2,
+                  ranilaxmimain,
+                  ranilaxmidetail,
+                ],
+              },
+            ].map((item, index) => (
+              <div key={item.id} className="gallery-item">
+                <div
+                  className={`grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12 items-center ${
+                    index % 2 === 1 ? "md:grid-flow-dense" : ""
+                  }`}
+                >
+                  {/* Images Column (Left) */}
+                  <div
+                    className={`space-y-4 ${index % 2 === 1 ? "md:col-start-3" : ""}`}
+                  >
+                    <div className="grid grid-cols-2 gap-4">
+                      {item.images.slice(0, 2).map((img, i) => (
+                        <Link to="/collection" key={i}>
+                          <div className="overflow-hidden rounded-xl aspect-square cursor-pointer hover:opacity-80 transition-opacity">
+                            <div className="relative w-full h-full bg-gradient-to-br from-[#5A7A5E]/20 to-[#F5F1E8]/20 border border-[#5A7A5E]/20 shadow-lg">
+                              <img
+                                src={img}
+                                alt={`${item.name} ${i + 1}`}
+                                className="w-full h-full object-cover"
+                                onError={() =>
+                                  console.log(`Failed to load image: ${item.name} ${i + 1}`)
+                                }
+                              />
+                            </div>
                           </div>
+                        </Link>
+                      ))}
+                    </div>
+                    <Link to="/collection">
+                      <div className="overflow-hidden rounded-xl aspect-video cursor-pointer hover:opacity-80 transition-opacity">
+                        <div className="relative w-full h-full bg-gradient-to-br from-[#5A7A5E]/20 to-[#F5F1E8]/20 border border-[#5A7A5E]/20 shadow-lg">
+                          <img
+                            src={item.images[2]}
+                            alt={`${item.name} main`}
+                            className="w-full h-full object-cover"
+                            onError={() =>
+                              console.log(`Failed to load image: ${item.name} main`)
+                            }
+                          />
                         </div>
-                      </Link>
-                    ))}
+                      </div>
+                    </Link>
+                  </div>
+
+                  {/* Content Column */}
+                  <div
+                    className={`space-y-6 ${
+                      index % 2 === 1 ? "md:col-start-1 md:col-end-3" : "md:col-start-2"
+                    }`}
+                  >
+                    <div className="space-y-2">
+                      <p className="text-[#5A7A5E] text-sm tracking-widest font-light">
+                        ROYAL HISTORY
+                      </p>
+                      <h3 className="text-4xl sm:text-5xl font-light text-[#333333] font-dancing-script">
+                        {item.name}
+                      </h3>
+                      <p className="text-[#666666] text-sm tracking-wide">{item.subtitle}</p>
+                    </div>
+                    <div className="w-12 h-px bg-gradient-to-r from-[#5A7A5E] to-transparent"></div>
+                    <div className="space-y-4 text-[#666666] leading-relaxed">
+                      <p className="text-sm">{item.description}</p>
+                      <p className="text-sm">{item.details}</p>
+                    </div>
+                    <a
+                      href="#"
+                      className="inline-block px-6 py-2 bg-[#5A7A5E] text-white text-sm tracking-widest font-semibold rounded-full hover:bg-[#333333] hover:text-white transition-all shadow-md hover:shadow-lg"
+                    >
+                      LEARN MORE
+                    </a>
+                  </div>
+
+                  {/* Right Images Column */}
+                  <div
+                    className={`space-y-4 ${index % 2 === 1 ? "md:col-start-1" : "md:col-start-3"}`}
+                  >
+                    <Link to="/collection">
+                      <div className="overflow-hidden rounded-xl aspect-video cursor-pointer hover:opacity-80 transition-opacity">
+                        <div className="relative w-full h-full bg-gradient-to-br from-[#5A7A5E]/20 to-[#F5F1E8]/20 border border-[#5A7A5E]/20 shadow-lg">
+                          <img
+                            src={item.images[3]}
+                            alt={`${item.name} detail`}
+                            className="w-full h-full object-cover"
+                            onError={() =>
+                              console.log(`Failed to load image: ${item.name} detail`)
+                            }
+                          />
+                        </div>
+                      </div>
+                    </Link>
+                    <div className="grid grid-cols-2 gap-4">
+                      {item.images.slice(4).map((img, i) => (
+                        <Link to="/collection" key={i}>
+                          <div className="overflow-hidden rounded-xl aspect-square cursor-pointer hover:opacity-80 transition-opacity">
+                            <div className="relative w-full h-full bg-gradient-to-br from-[#5A7A5E]/20 to-[#F5F1E8]/20 border border-[#5A7A5E]/20 shadow-lg">
+                              <img
+                                src={img}
+                                alt={`${item.name} ${i + 5}`}
+                                className="w-full h-full object-cover"
+                                onError={() =>
+                                  console.log(`Failed to load image: ${item.name} ${i + 5}`)
+                                }
+                              />
+                            </div>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 </div>
+                {index < 2 && (
+                  <div className="mt-24 h-px bg-gradient-to-r from-transparent via-[#5A7A5E]/30 to-transparent"></div>
+                )}
               </div>
-              {index < 2 && (
-                <div className="mt-24 h-px bg-gradient-to-r from-transparent via-[#FFD700]/30 to-transparent"></div>
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="text-center mt-12">
+            <Link
+              to="/collection"
+              className="inline-block px-8 py-3 bg-[#5A7A5E] text-white text-sm tracking-widest font-semibold rounded-full hover:bg-[#333333] hover:text-white transition-all shadow-md hover:shadow-lg"
+            >
+              Explore More Collection
+            </Link>
+          </div>
         </div>
-        <div className="text-center mt-12">
-          <Link
-            to="/collection"
-            className="inline-block px-8 py-3 border border-[#FFD700] text-[#FFD700] text-sm tracking-widest font-light hover:bg-[#FFD700] hover:text-[#1C2526] transition-all"
-          >
-            Explore More Collection
-          </Link>
-        </div>
-      </div>
-      {customRef && customRef.current && <div>{console.log("Gallery section in view")}</div>}
-    </section>
-    <div className="border-t-2 border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.1)]"></div>
+        {customRef && customRef.current && <div>{console.log("Gallery section in view")}</div>}
+      </section>
+      <div className="border-t-2 border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.1)]"></div>
 
       {/* Custom Experience Section (Unchanged) */}
       <section

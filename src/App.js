@@ -4,7 +4,6 @@ import Contact from "./components/Contact";
 import Home from "./pages/Home";
 import Collection from "./components/Collection";
 import Events from "./components/Events";
-import WelcomeLoader from "./components/WelcomeLoader";
 import Footer from "./components/Footer";
 
 function App() {
@@ -20,7 +19,6 @@ function App() {
 
   return (
     <Router>
-      {isLoading && <WelcomeLoader />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/collection" element={<Collection />} />
