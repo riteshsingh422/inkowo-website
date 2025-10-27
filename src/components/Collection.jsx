@@ -3,6 +3,7 @@ import { useState } from "react"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 
+
 // ===== Import all images like in Home page =====
 import jodhabai1 from "../assets/images/jodhabai1.jpg"
 import jodhabai2 from "../assets/images/jodhabai2.jpg"
