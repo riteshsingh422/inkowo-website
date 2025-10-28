@@ -30,6 +30,8 @@ import ranilaxmi1 from "../assets/images/ranilaxmi1.jpg"
 import ranilaxmi2 from "../assets/images/ranilaxmi2.jpg"
 import ranilaxmidetail from "../assets/images/ranilaxmidetail.jpeg"
 import ranilaxmimain from "../assets/images/ranilaxmimain.jpg"
+import lotus from "../assets/images/lotus.png"; // 🌸 Lotus background image
+
 
 const Home = () => {
   const heroRef = useRef(null)
@@ -349,6 +351,11 @@ const Home = () => {
       {/* Events Section (REDESIGNED) */}
       <section ref={eventsRef} className="py-24 bg-[#F5F1E8] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <img
+          src={lotus}
+          alt="Lotus background"
+          className="absolute left-1/2 transform -translate-x-1/2 top-56 sm:top-0 w-72 sm:w-96 md:w-[500px] opacity-10 blur-[1px] mx-auto select-none pointer-events-none transition-all duration-700"
+        />
         {/* Header Text */}
         <h2 className="text-5xl sm:text-6xl md:text-7xl font-semibold text-center mb-16">
             <span className="font-dancing-script text-[#222] tracking-wide">INKOWO</span>{" "}
