@@ -4,8 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 // Import luxury images
-import crownIcon from "../assets/images/ranilaxmi1.jpg";
-import velvetBg from "../assets/images/ranilaxmi2.jpg";
+import crownIcon from "../assets/images/crown.png";
 import member1 from "../assets/images/ranipadmavati2.jpg";
 import member2 from "../assets/images/jodhabai5.jpg";
 import member3 from "../assets/images/jodhabaidetail.webp";
