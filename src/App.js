@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Collection from "./components/Collection";
 import Events from "./components/Events";
 import Footer from "./components/Footer";
+import About from "./components/About";
+import Membership from "./components/Membership";
 import WelcomeLoader from "./components/WelcomeLoader"; // Adjust the path based on your file structure
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
             <Route path="/collection" element={<Collection />} />
             <Route path="/events" element={<Events />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/membership" element={<Membership />} />
             <Route path="/footer" element={<Footer />} />
           </Routes>
         </Router>
